@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 import os, sys, time, shutil
 
-ART_PATH = os.environ.get("ART", "/app/ascii.txt")
+# Fallback to the ascii art file next to this script if no environment
+# variable is set. The previous default pointed to ``/app/ascii.txt`` which
+# fails when running the script outside of its container image.  By resolving
+# the path relative to ``run.py`` we ensure the script works in any location.
+DEFAULT_ART = os.path.join(os.path.dirname(__file__), "ascii.txt")
+ART_PATH = os.environ.get("ART", DEFAULT_ART)
 MSG = os.environ.get("MSG", "Congratulations Dr. Lennart Schürmann!")
 FRAME_DELAY = float(os.environ.get("FRAME_DELAY", "0.04"))
 HOLD = float(os.environ.get("HOLD", "0.4"))
